@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;family=Fira+Code:wght@400;500&amp;display=swap"
       rel="stylesheet"
     />
     <!-- AOS Animate On Scroll CSS -->
@@ -175,6 +175,89 @@
       }
 
       /* ================================
+       Scroll Progress Bar
+       ================================ */
+      .scroll-progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 3px;
+        background: var(--gradient);
+        width: 0%;
+        z-index: 10001;
+        transition: width 0.1s linear;
+      }
+
+      /* ================================
+       Noise Overlay
+       ================================ */
+      .noise-overlay {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 9998;
+        opacity: 0.025;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        background-repeat: repeat;
+        background-size: 180px;
+      }
+
+      [data-theme="dark"] .noise-overlay {
+        opacity: 0.04;
+      }
+
+      /* ================================
+       Custom Cursor
+       ================================ */
+      .custom-cursor {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 32px;
+        height: 32px;
+        border: 2px solid var(--primary);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 9999;
+        transform: translate(-50%, -50%);
+        transition:
+          width 0.2s,
+          height 0.2s,
+          border-color 0.2s,
+          background 0.2s;
+      }
+
+      .custom-cursor.hover {
+        width: 48px;
+        height: 48px;
+        background: rgba(0, 0, 0, 0.04);
+      }
+
+      [data-theme="dark"] .custom-cursor.hover {
+        background: rgba(255, 255, 255, 0.07);
+      }
+
+      .custom-cursor-dot {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 6px;
+        height: 6px;
+        background: var(--primary);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 10000;
+        transform: translate(-50%, -50%);
+      }
+
+      @media (pointer: coarse) {
+        .custom-cursor,
+        .custom-cursor-dot {
+          display: none;
+        }
+      }
+
+      /* ================================
        Buttons
        ================================ */
       .btn {
@@ -218,7 +301,6 @@
         font-size: 0.85rem;
       }
 
-      /* Gradient button text: white in light mode, black in dark mode */
       .btn-gradient {
         color: #fff;
       }
@@ -387,6 +469,7 @@
        Hero Section
        ================================ */
       .hero {
+        position: relative;
         min-height: 100vh;
         display: flex;
         align-items: center;
@@ -396,6 +479,18 @@
           radial-gradient(circle at 80% 70%, rgba(102, 102, 102, 0.08) 0%, transparent 50%),
           var(--bg-white);
         transition: background 0.3s ease;
+        overflow: hidden;
+      }
+
+      .hero-particles {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+      }
+
+      .hero > .container {
+        position: relative;
+        z-index: 1;
       }
 
       .hero-grid {
@@ -442,24 +537,8 @@
         font-weight: 600;
       }
 
-      .cursor {
-        display: inline-block;
-        width: 2.5px;
-        height: 1.1em;
-        background: var(--primary);
-        margin-left: 3px;
-        vertical-align: middle;
-        animation: blink 1s step-end infinite;
-      }
-
-      @keyframes blink {
-        0%,
-        100% {
-          opacity: 1;
-        }
-        50% {
-          opacity: 0;
-        }
+      .scramble-dud {
+        opacity: 0.5;
       }
 
       .hero-tagline {
@@ -631,6 +710,8 @@
           transform 0.3s ease,
           box-shadow 0.3s ease,
           background 0.3s ease;
+        position: relative;
+        overflow: hidden;
       }
 
       .skill-card:hover {
@@ -689,6 +770,36 @@
       }
 
       /* ================================
+       Spotlight / Glow Cards
+       ================================ */
+      .spotlight-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+          rgba(0, 0, 0, 0.055),
+          transparent 40%
+        );
+        opacity: 0;
+        transition: opacity 0.35s ease;
+        pointer-events: none;
+        z-index: 2;
+      }
+
+      .spotlight-card:hover::before {
+        opacity: 1;
+      }
+
+      [data-theme="dark"] .spotlight-card::before {
+        background: radial-gradient(
+          600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+          rgba(255, 255, 255, 0.09),
+          transparent 40%
+        );
+      }
+
+      /* ================================
        Projects Section
        ================================ */
       .projects {
@@ -714,6 +825,7 @@
           background 0.3s ease;
         display: flex;
         flex-direction: column;
+        position: relative;
       }
 
       .project-card:hover {
@@ -739,6 +851,8 @@
         display: flex;
         flex-direction: column;
         flex: 1;
+        position: relative;
+        z-index: 3;
       }
 
       .project-title {
@@ -845,6 +959,8 @@
           transform 0.3s ease,
           box-shadow 0.3s ease,
           background 0.3s ease;
+        position: relative;
+        overflow: hidden;
       }
 
       .testimonial-inner:hover {
@@ -1047,6 +1163,551 @@
       }
 
       /* ================================
+       Play Section (Games Hub)
+       ================================ */
+      .play {
+        padding: 6rem 0;
+        background: var(--bg-gray);
+        transition: background 0.3s ease;
+      }
+
+      .games-tabs {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-bottom: 2.5rem;
+        flex-wrap: wrap;
+      }
+
+      .game-tab {
+        padding: 0.6rem 1.4rem;
+        border-radius: var(--radius-pill);
+        border: 1.5px solid var(--border);
+        background: var(--bg-white);
+        color: var(--text-muted);
+        font-family: "Poppins", sans-serif;
+        font-size: 0.85rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .game-tab:hover {
+        border-color: var(--primary);
+        color: var(--text-dark);
+      }
+
+      .game-tab.active {
+        background: var(--gradient);
+        color: #fff;
+        border-color: transparent;
+      }
+
+      [data-theme="dark"] .game-tab.active {
+        color: #000;
+      }
+
+      .game-panel {
+        display: none;
+      }
+
+      .game-panel.active {
+        display: block;
+      }
+
+      /* ================================
+       Terminal Game
+       ================================ */
+      .terminal-wrap {
+        max-width: 720px;
+        margin: 0 auto;
+        border-radius: var(--radius);
+        overflow: hidden;
+        box-shadow: var(--shadow-lg);
+        background: #0d0d0d;
+        font-family: "Fira Code", "Courier New", monospace;
+      }
+
+      .terminal-header {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1rem;
+        background: #1a1a1a;
+        border-bottom: 1px solid #333;
+      }
+
+      .term-btn {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+      .term-btn.red {
+        background: #ff5f56;
+      }
+      .term-btn.yellow {
+        background: #ffbd2e;
+      }
+      .term-btn.green {
+        background: #27c93f;
+      }
+
+      .terminal-title {
+        flex: 1;
+        text-align: center;
+        font-size: 0.8rem;
+        color: #888;
+        margin: 0;
+        font-family: "Fira Code", "Courier New", monospace;
+      }
+
+      .terminal-body {
+        padding: 1.25rem;
+        min-height: 380px;
+        max-height: 480px;
+        overflow-y: auto;
+        color: #e0e0e0;
+        font-size: 0.85rem;
+        line-height: 1.7;
+      }
+
+      .terminal-body::-webkit-scrollbar {
+        width: 6px;
+      }
+      .terminal-body::-webkit-scrollbar-thumb {
+        background: #444;
+        border-radius: 3px;
+      }
+
+      .term-line {
+        margin-bottom: 0.35rem;
+        word-break: break-word;
+      }
+
+      .term-prompt {
+        color: #27c93f;
+        font-weight: 500;
+      }
+
+      .term-cmd {
+        color: #e0e0e0;
+      }
+
+      .term-output {
+        color: #a0a0a0;
+        padding-left: 0rem;
+        white-space: pre-wrap;
+      }
+
+      .term-output.success {
+        color: #27c93f;
+      }
+      .term-output.error {
+        color: #ff5f56;
+      }
+      .term-output.info {
+        color: #60a5fa;
+      }
+      .term-output.warn {
+        color: #ffbd2e;
+      }
+
+      .term-input-line {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        margin-top: 0.5rem;
+      }
+
+      .term-input {
+        flex: 1;
+        background: transparent;
+        border: none;
+        outline: none;
+        color: #e0e0e0;
+        font-family: "Fira Code", "Courier New", monospace;
+        font-size: 0.85rem;
+        caret-color: #27c93f;
+        padding: 0;
+      }
+
+      .term-cursor {
+        display: inline-block;
+        width: 8px;
+        height: 1.1em;
+        background: #27c93f;
+        animation: termBlink 1s step-end infinite;
+        vertical-align: text-bottom;
+      }
+
+      @keyframes termBlink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0;
+        }
+      }
+
+      .terminal-hint {
+        text-align: center;
+        margin-top: 1rem;
+        font-size: 0.8rem;
+        color: var(--text-muted);
+      }
+
+      .terminal-hint code {
+        background: var(--bg-gray);
+        padding: 0.15rem 0.4rem;
+        border-radius: 4px;
+        font-family: "Fira Code", monospace;
+        font-size: 0.75rem;
+      }
+
+      /* ================================
+       Robot Programming Puzzle
+       ================================ */
+      .robot-wrap {
+        max-width: 560px;
+        margin: 0 auto;
+      }
+
+      .robot-grid {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 4px;
+        margin-bottom: 1.5rem;
+        padding: 1rem;
+        background: var(--bg-white);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        aspect-ratio: 1;
+        max-width: 420px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .robot-cell {
+        background: var(--bg-gray);
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.4rem;
+        transition: background 0.2s ease;
+        aspect-ratio: 1;
+      }
+
+      .robot-cell.wall {
+        background: var(--text-dark);
+        opacity: 0.85;
+      }
+
+      .robot-cell.goal {
+        background: rgba(34, 197, 94, 0.12);
+        border: 2px solid #22c55e;
+      }
+
+      .robot-cell.robot {
+        background: rgba(96, 165, 250, 0.12);
+        border: 2px solid #60a5fa;
+      }
+
+      .robot-cell.path {
+        background: rgba(251, 191, 36, 0.2);
+      }
+
+      .robot-controls {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        max-width: 420px;
+        margin: 0 auto;
+      }
+
+      .robot-program {
+        background: var(--bg-white);
+        border: 1.5px solid var(--border);
+        border-radius: var(--radius-sm);
+        padding: 1rem;
+        min-height: 120px;
+        font-family: "Fira Code", "Courier New", monospace;
+        font-size: 0.85rem;
+        color: var(--text-dark);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        align-content: flex-start;
+      }
+
+      .robot-cmd {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.3rem 0.6rem;
+        border-radius: 6px;
+        background: var(--bg-gray);
+        border: 1px solid var(--border);
+        font-size: 0.8rem;
+        cursor: default;
+      }
+
+      .robot-cmd.loop-start,
+      .robot-cmd.loop-end {
+        background: rgba(251, 191, 36, 0.15);
+        border-color: #fbbf24;
+        color: #b45309;
+      }
+
+      [data-theme="dark"] .robot-cmd.loop-start,
+      [data-theme="dark"] .robot-cmd.loop-end {
+        color: #fbbf24;
+      }
+
+      .robot-btn-row {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .robot-btn {
+        padding: 0.5rem 1rem;
+        border-radius: var(--radius-sm);
+        border: 1.5px solid var(--border);
+        background: var(--bg-white);
+        color: var(--text-dark);
+        font-family: "Poppins", sans-serif;
+        font-size: 0.8rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+      }
+
+      .robot-btn:hover {
+        border-color: var(--primary);
+        transform: translateY(-1px);
+      }
+
+      .robot-btn.primary {
+        background: var(--gradient);
+        color: #fff;
+        border-color: transparent;
+      }
+
+      [data-theme="dark"] .robot-btn.primary {
+        color: #000;
+      }
+
+      .robot-btn.danger {
+        border-color: #fca5a5;
+        color: #dc2626;
+      }
+
+      .robot-btn.danger:hover {
+        background: #fee2e2;
+      }
+
+      .robot-status {
+        text-align: center;
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        min-height: 1.5rem;
+        font-weight: 500;
+      }
+
+      .robot-status.win {
+        color: #16a34a;
+      }
+      .robot-status.fail {
+        color: #dc2626;
+      }
+
+      .robot-level-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 420px;
+        margin: 0 auto 1rem;
+        padding: 0 0.25rem;
+      }
+
+      .robot-level-info span {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        font-weight: 500;
+      }
+
+      /* ================================
+       Typing Speed Challenge
+       ================================ */
+      .typing-wrap {
+        max-width: 720px;
+        margin: 0 auto;
+      }
+
+      .typing-stats {
+        display: flex;
+        justify-content: center;
+        gap: 2.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .typing-stat {
+        text-align: center;
+      }
+
+      .typing-stat-value {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--text-dark);
+        line-height: 1;
+      }
+
+      .typing-stat-label {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-top: 0.25rem;
+      }
+
+      .typing-box {
+        background: var(--bg-white);
+        border: 1.5px solid var(--border);
+        border-radius: var(--radius);
+        padding: 1.75rem;
+        margin-bottom: 1.25rem;
+        min-height: 160px;
+        position: relative;
+      }
+
+      .typing-text {
+        font-family: "Fira Code", "Courier New", monospace;
+        font-size: 1rem;
+        line-height: 1.8;
+        color: var(--text-muted);
+        user-select: none;
+      }
+
+      .typing-text .char {
+        position: relative;
+      }
+
+      .typing-text .char.correct {
+        color: #16a34a;
+      }
+
+      .typing-text .char.wrong {
+        color: #dc2626;
+        background: rgba(220, 38, 38, 0.08);
+        border-radius: 2px;
+      }
+
+      .typing-text .char.current {
+        background: rgba(96, 165, 250, 0.25);
+        border-radius: 2px;
+      }
+
+      .typing-input {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        cursor: default;
+      }
+
+      .typing-focus-hint {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.85);
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        border-radius: var(--radius);
+        cursor: pointer;
+        transition: opacity 0.2s ease;
+      }
+
+      [data-theme="dark"] .typing-focus-hint {
+        background: rgba(18, 18, 18, 0.85);
+      }
+
+      .typing-focus-hint.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .typing-controls {
+        display: flex;
+        justify-content: center;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+      }
+
+      .typing-lang-select {
+        padding: 0.55rem 1rem;
+        border-radius: var(--radius-sm);
+        border: 1.5px solid var(--border);
+        background: var(--bg-white);
+        color: var(--text-dark);
+        font-family: "Poppins", sans-serif;
+        font-size: 0.85rem;
+        cursor: pointer;
+      }
+
+      .typing-results {
+        display: none;
+        text-align: center;
+        padding: 1.5rem;
+        background: var(--bg-white);
+        border-radius: var(--radius);
+        border: 1.5px solid var(--border);
+        margin-bottom: 1.25rem;
+      }
+
+      .typing-results.show {
+        display: block;
+      }
+
+      .typing-results h3 {
+        font-size: 1.25rem;
+        margin-bottom: 0.75rem;
+        color: var(--text-dark);
+      }
+
+      .typing-result-grid {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        margin-bottom: 1rem;
+      }
+
+      .typing-result-item {
+        text-align: center;
+      }
+
+      .typing-result-item .big {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--text-dark);
+      }
+
+      .typing-result-item .small {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+      }
+
+      /* ================================
        Contact Section
        ================================ */
       .contact {
@@ -1117,6 +1778,61 @@
 
       .contact-detail a:hover {
         color: var(--primary);
+      }
+
+      .email-row {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .copy-btn {
+        width: 28px;
+        height: 28px;
+        border-radius: 6px;
+        border: 1.5px solid var(--border);
+        background: transparent;
+        color: var(--text-muted);
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        transition: all 0.2s ease;
+        position: relative;
+      }
+
+      .copy-btn:hover {
+        border-color: var(--primary);
+        color: var(--text-dark);
+      }
+
+      .copy-btn.copied {
+        border-color: #22c55e;
+        color: #22c55e;
+      }
+
+      .copy-tooltip {
+        position: absolute;
+        bottom: calc(100% + 6px);
+        left: 50%;
+        transform: translateX(-50%) scale(0.9);
+        background: var(--text-dark);
+        color: var(--bg-white);
+        font-size: 0.7rem;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        white-space: nowrap;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.2s ease;
+        pointer-events: none;
+      }
+
+      .copy-btn.copied .copy-tooltip {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) scale(1);
       }
 
       .contact-form {
@@ -1330,6 +2046,12 @@
         .testimonial-inner {
           padding: 1.75rem;
         }
+        .typing-stats {
+          gap: 1.5rem;
+        }
+        .typing-result-grid {
+          gap: 1.25rem;
+        }
       }
 
       @media (max-width: 480px) {
@@ -1349,6 +2071,13 @@
         .profile-img {
           width: 180px;
           height: 180px;
+        }
+        .robot-grid {
+          gap: 3px;
+          padding: 0.5rem;
+        }
+        .typing-stat-value {
+          font-size: 1.4rem;
         }
       }
 
@@ -1381,8 +2110,9 @@
         .testimonials-slides {
           transition: none;
         }
-        .cursor {
-          animation: none;
+        .custom-cursor,
+        .custom-cursor-dot {
+          display: none;
         }
         .testimonials-slides {
           transition: none !important;
@@ -1391,6 +2121,26 @@
     </style>
   </head>
   <body data-aos-easing="ease-out-cubic" data-aos-duration="600" data-aos-delay="0">
+    <!-- Scroll Progress Bar -->
+    <div class="scroll-progress" id="scroll-progress" style="width: 40.2247%"></div>
+
+    <!-- Noise Texture Overlay -->
+    <div class="noise-overlay" aria-hidden="true"></div>
+
+    <!-- Custom Cursor -->
+    <div
+      class="custom-cursor"
+      id="custom-cursor"
+      aria-hidden="true"
+      style="left: 1020px; top: 133px"
+    ></div>
+    <div
+      class="custom-cursor-dot"
+      id="custom-cursor-dot"
+      aria-hidden="true"
+      style="left: 1020px; top: 133px"
+    ></div>
+
     <!-- ================================
        Navbar
        ================================ -->
@@ -1405,9 +2155,9 @@
             <a href="#projects">Projects</a>
             <a href="#github">GitHub</a>
             <a href="#testimonials">Testimonials</a>
+            <a href="#play">Play</a>
             <a href="#contact">Contact</a>
             <button
-              href="#"
               class="btn btn-gradient btn-sm"
               onclick="
                 event.preventDefault();
@@ -1466,14 +2216,22 @@
        Hero Section
        ================================ -->
     <section class="hero" id="home">
+      <div class="hero-particles" id="tsparticles">
+        <canvas
+          data-generated="true"
+          style="width: 100%; height: 100%; pointer-events: initial"
+          aria-hidden="true"
+          width="2256"
+          height="1832"
+        ></canvas>
+      </div>
       <div class="container">
         <div class="hero-grid">
           <div class="hero-content">
             <span class="greeting">Hello, I'm</span>
             <h1 class="hero-name gradient-text">Danny</h1>
             <div class="typewriter-wrap">
-              <span id="typewriter">Student Developer</span
-              ><span class="cursor" aria-hidden="true"></span>
+              <span id="typewriter">Tech Enthusiast</span>
             </div>
             <p class="hero-tagline">Just build.</p>
             <div class="hero-buttons">
@@ -1560,7 +2318,7 @@
     </section>
 
     <!-- ================================
-       Skills Section (Categorized Cards)
+       Skills Section
        ================================ -->
     <section class="skills aos-init aos-animate" id="skills" data-aos="fade-up">
       <div class="container">
@@ -1571,11 +2329,12 @@
           what I can bring to a project.
         </p>
         <div class="skills-grid">
-          <article class="skill-card aos-init aos-animate" data-aos="fade-up" data-aos-delay="0">
-            <h3>
-              <span class="skill-icon">&lt;/&gt;</span>
-              Frontend
-            </h3>
+          <article
+            class="skill-card spotlight-card aos-init aos-animate"
+            data-aos="fade-up"
+            data-aos-delay="0"
+          >
+            <h3><span class="skill-icon">&lt;/&gt;</span>Frontend</h3>
             <ul class="skill-list">
               <li>HTML5 &amp; CSS3</li>
               <li>JavaScript (ES6+)</li>
@@ -1584,11 +2343,12 @@
               <li>UI/UX Basics</li>
             </ul>
           </article>
-          <article class="skill-card aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
-            <h3>
-              <span class="skill-icon">{}</span>
-              Backend &amp; DB
-            </h3>
+          <article
+            class="skill-card spotlight-card aos-init aos-animate"
+            data-aos="fade-up"
+            data-aos-delay="100"
+          >
+            <h3><span class="skill-icon">{}</span>Backend &amp; DB</h3>
             <ul class="skill-list">
               <li>Firebase</li>
               <li>Firestore</li>
@@ -1597,11 +2357,12 @@
               <li>Realtime Databases</li>
             </ul>
           </article>
-          <article class="skill-card aos-init aos-animate" data-aos="fade-up" data-aos-delay="200">
-            <h3>
-              <span class="skill-icon">⚙</span>
-              Tools &amp; Tech
-            </h3>
+          <article
+            class="skill-card spotlight-card aos-init aos-animate"
+            data-aos="fade-up"
+            data-aos-delay="200"
+          >
+            <h3><span class="skill-icon">⚙</span>Tools &amp; Tech</h3>
             <ul class="skill-list">
               <li>Git &amp; GitHub</li>
               <li>VS Code</li>
@@ -1610,11 +2371,12 @@
               <li>Command Line</li>
             </ul>
           </article>
-          <article class="skill-card aos-init aos-animate" data-aos="fade-up" data-aos-delay="300">
-            <h3>
-              <span class="skill-icon">★</span>
-              Specialized
-            </h3>
+          <article
+            class="skill-card spotlight-card aos-init aos-animate"
+            data-aos="fade-up"
+            data-aos-delay="300"
+          >
+            <h3><span class="skill-icon">★</span>Specialized</h3>
             <ul class="skill-list">
               <li>Cybersecurity Basics</li>
               <li>Robotics</li>
@@ -1639,7 +2401,11 @@
           different technologies. Click any thumbnail below a card to browse more screenshots.
         </p>
         <div class="projects-grid">
-          <article class="project-card aos-init aos-animate" data-aos="fade-up" data-aos-delay="0">
+          <article
+            class="project-card spotlight-card aos-init aos-animate"
+            data-aos="fade-up"
+            data-aos-delay="0"
+          >
             <div class="project-image">
               <img src="assets/catz1.png" alt="Cat-bolz screenshot" />
             </div>
@@ -1683,7 +2449,7 @@
             </div>
           </article>
           <article
-            class="project-card aos-init aos-animate"
+            class="project-card spotlight-card aos-init aos-animate"
             data-aos="fade-up"
             data-aos-delay="150"
           >
@@ -1732,7 +2498,7 @@
             </div>
           </article>
           <article
-            class="project-card aos-init aos-animate"
+            class="project-card spotlight-card aos-init aos-animate"
             data-aos="fade-up"
             data-aos-delay="300"
           >
@@ -1795,7 +2561,11 @@
           A live snapshot of my GitHub activity, language usage, and contribution streaks.
         </p>
         <div class="projects-grid">
-          <article class="project-card aos-init aos-animate" data-aos="fade-up" data-aos-delay="0">
+          <article
+            class="project-card spotlight-card aos-init aos-animate"
+            data-aos="fade-up"
+            data-aos-delay="0"
+          >
             <div
               class="project-image"
               style="aspect-ratio: auto; padding: 1rem; background: transparent"
@@ -1824,9 +2594,8 @@
               >
             </div>
           </article>
-
           <article
-            class="project-card aos-init aos-animate"
+            class="project-card spotlight-card aos-init aos-animate"
             data-aos="fade-up"
             data-aos-delay="150"
           >
@@ -1857,9 +2626,8 @@
               >
             </div>
           </article>
-
           <article
-            class="project-card aos-init aos-animate"
+            class="project-card spotlight-card aos-init aos-animate"
             data-aos="fade-up"
             data-aos-delay="300"
           >
@@ -1896,7 +2664,7 @@
     </section>
 
     <!-- ================================
-       Testimonials Section (Carousel)
+       Testimonials Section
        ================================ -->
     <section class="testimonials aos-init aos-animate" id="testimonials" data-aos="fade-up">
       <div class="container">
@@ -1910,10 +2678,10 @@
             <div
               class="testimonials-slides"
               id="testimonials-slides"
-              style="transform: translateX(-100%)"
+              style="transform: translateX(-200%)"
             >
               <div class="testimonial-card">
-                <div class="testimonial-inner">
+                <div class="testimonial-inner spotlight-card">
                   <svg
                     class="quote-icon"
                     viewBox="0 0 24 24"
@@ -1939,7 +2707,7 @@
                 </div>
               </div>
               <div class="testimonial-card">
-                <div class="testimonial-inner">
+                <div class="testimonial-inner spotlight-card">
                   <svg
                     class="quote-icon"
                     viewBox="0 0 24 24"
@@ -1964,7 +2732,7 @@
                 </div>
               </div>
               <div class="testimonial-card">
-                <div class="testimonial-inner">
+                <div class="testimonial-inner spotlight-card">
                   <svg
                     class="quote-icon"
                     viewBox="0 0 24 24"
@@ -2007,12 +2775,12 @@
             </button>
             <div class="carousel-dots" id="test-dots">
               <button class="carousel-dot" data-index="0" aria-label="Go to testimonial 1"></button>
+              <button class="carousel-dot" data-index="1" aria-label="Go to testimonial 2"></button>
               <button
                 class="carousel-dot active"
-                data-index="1"
-                aria-label="Go to testimonial 2"
+                data-index="2"
+                aria-label="Go to testimonial 3"
               ></button>
-              <button class="carousel-dot" data-index="2" aria-label="Go to testimonial 3"></button>
             </div>
             <button class="carousel-arrow" id="test-next" aria-label="Next testimonial">
               <svg
@@ -2028,6 +2796,278 @@
                 <polyline points="9 18 15 12 9 6"></polyline>
               </svg>
             </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================
+       Play Section (Games Hub)
+       ================================ -->
+    <section class="play aos-init aos-animate" id="play" data-aos="fade-up">
+      <div class="container">
+        <h2 class="section-title gradient-text">Play</h2>
+        <div class="heading-bar"></div>
+        <p class="section-subtitle">
+          Take a break and try some interactive mini-games built right into this portfolio.
+        </p>
+
+        <div class="games-tabs">
+          <button class="game-tab" data-game="terminal">Terminal</button>
+          <button class="game-tab" data-game="robot">Robot Puzzle</button>
+          <button class="game-tab active" data-game="typing">Typing Challenge</button>
+        </div>
+
+        <!-- Terminal Game Panel -->
+        <div class="game-panel" id="panel-terminal">
+          <div class="terminal-wrap">
+            <div class="terminal-header">
+              <div class="term-btn red"></div>
+              <div class="term-btn yellow"></div>
+              <div class="term-btn green"></div>
+              <p class="terminal-title">danny@portfolio ~ zsh</p>
+            </div>
+            <div class="terminal-body" id="terminal-body">
+              <div class="term-line">Welcome to Danny's interactive terminal.</div>
+              <div class="term-line">
+                Type <span style="color: #ffbd2e">help</span> to see available commands.
+              </div>
+              <div class="term-line" style="margin-bottom: 0.5rem">
+                Try <span style="color: #60a5fa">hack</span> for a mini decryption challenge.
+              </div>
+              <div class="term-input-line">
+                <span class="term-prompt">$</span>
+                <input
+                  type="text"
+                  class="term-input"
+                  id="term-input"
+                  autocomplete="off"
+                  spellcheck="false"
+                />
+                <span class="term-cursor"></span>
+              </div>
+            </div>
+          </div>
+          <p class="terminal-hint">
+            Available commands: <code>help</code> <code>about</code> <code>skills</code>
+            <code>projects</code> <code>contact</code> <code>hack</code> <code>clear</code>
+          </p>
+        </div>
+
+        <!-- Robot Puzzle Panel -->
+        <div class="game-panel" id="panel-robot">
+          <div class="robot-wrap">
+            <div class="robot-level-info">
+              <span id="robot-level-label">Level 1 of 4</span>
+              <span id="robot-moves-label">Moves: 1</span>
+            </div>
+            <div class="robot-grid" id="robot-grid">
+              <div class="robot-cell"></div>
+              <div class="robot-cell"></div>
+              <div class="robot-cell"></div>
+              <div class="robot-cell"></div>
+              <div class="robot-cell"></div>
+              <div class="robot-cell"></div>
+              <div class="robot-cell"></div>
+              <div class="robot-cell"></div>
+              <div class="robot-cell"></div>
+              <div class="robot-cell"></div>
+              <div class="robot-cell"></div>
+              <div class="robot-cell"></div>
+              <div class="robot-cell">🤖</div>
+              <div class="robot-cell robot">↓</div>
+              <div class="robot-cell"></div>
+              <div class="robot-cell"></div>
+              <div class="robot-cell"></div>
+              <div class="robot-cell goal">🏁</div>
+              <div class="robot-cell"></div>
+              <div class="robot-cell"></div>
+              <div class="robot-cell"></div>
+              <div class="robot-cell"></div>
+              <div class="robot-cell"></div>
+              <div class="robot-cell"></div>
+              <div class="robot-cell"></div>
+              <div class="robot-cell"></div>
+              <div class="robot-cell"></div>
+              <div class="robot-cell"></div>
+              <div class="robot-cell"></div>
+              <div class="robot-cell"></div>
+              <div class="robot-cell"></div>
+              <div class="robot-cell"></div>
+              <div class="robot-cell"></div>
+              <div class="robot-cell"></div>
+              <div class="robot-cell"></div>
+              <div class="robot-cell"></div>
+            </div>
+            <div class="robot-status fail" id="robot-status">
+              Robot stopped before reaching the goal. Try again.
+            </div>
+            <div class="robot-controls">
+              <div class="robot-program" id="robot-program">
+                <span class="robot-cmd" title="Click to remove" style="cursor: pointer"
+                  >↑ Forward</span
+                ><span class="robot-cmd" title="Click to remove" style="cursor: pointer"
+                  >↺ Left</span
+                ><span class="robot-cmd" title="Click to remove" style="cursor: pointer"
+                  >↻ Right</span
+                ><span class="robot-cmd" title="Click to remove" style="cursor: pointer"
+                  >↻ Right</span
+                ><span class="robot-cmd" title="Click to remove" style="cursor: pointer"
+                  >↻ Right</span
+                ><span class="robot-cmd" title="Click to remove" style="cursor: pointer"
+                  >↺ Left</span
+                >
+              </div>
+              <div class="robot-btn-row">
+                <button class="robot-btn" data-cmd="forward">↑ Forward</button>
+                <button class="robot-btn" data-cmd="left">↺ Turn Left</button>
+                <button class="robot-btn" data-cmd="right">↻ Turn Right</button>
+                <button
+                  class="robot-btn"
+                  data-cmd="loop2"
+                  style="background: rgba(251, 191, 36, 0.12)"
+                >
+                  🔁 Loop 2
+                </button>
+                <button
+                  class="robot-btn"
+                  data-cmd="loop3"
+                  style="background: rgba(251, 191, 36, 0.12)"
+                >
+                  🔁 Loop 3
+                </button>
+                <button
+                  class="robot-btn"
+                  data-cmd="endloop"
+                  style="background: rgba(251, 191, 36, 0.12)"
+                >
+                  🔚 End Loop
+                </button>
+              </div>
+              <div class="robot-btn-row">
+                <button class="robot-btn primary" id="robot-run">▶ Run Program</button>
+                <button class="robot-btn danger" id="robot-clear">✕ Clear</button>
+                <button class="robot-btn" id="robot-reset">↺ Reset Level</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Typing Challenge Panel -->
+        <div class="game-panel active" id="panel-typing">
+          <div class="typing-wrap">
+            <div class="typing-stats">
+              <div class="typing-stat">
+                <div class="typing-stat-value" id="typing-wpm">56</div>
+                <div class="typing-stat-label">WPM</div>
+              </div>
+              <div class="typing-stat">
+                <div class="typing-stat-value" id="typing-acc">100%</div>
+                <div class="typing-stat-label">Accuracy</div>
+              </div>
+              <div class="typing-stat">
+                <div class="typing-stat-value" id="typing-time">50</div>
+                <div class="typing-stat-label">Time</div>
+              </div>
+            </div>
+            <div class="typing-results" id="typing-results">
+              <h3>Time's Up!</h3>
+              <div class="typing-result-grid">
+                <div class="typing-result-item">
+                  <div class="big" id="result-wpm">0</div>
+                  <div class="small">WPM</div>
+                </div>
+                <div class="typing-result-item">
+                  <div class="big" id="result-acc">0%</div>
+                  <div class="small">Accuracy</div>
+                </div>
+                <div class="typing-result-item">
+                  <div class="big" id="result-chars">0</div>
+                  <div class="small">Chars</div>
+                </div>
+              </div>
+            </div>
+            <div class="typing-box" id="typing-box">
+              <div class="typing-text" id="typing-text">
+                <span class="char correct" data-index="0">c</span
+                ><span class="char correct" data-index="1">o</span
+                ><span class="char correct" data-index="2">n</span
+                ><span class="char correct" data-index="3">s</span
+                ><span class="char correct" data-index="4">t</span
+                ><span class="char correct" data-index="5"> </span
+                ><span class="char correct" data-index="6">g</span
+                ><span class="char correct" data-index="7">r</span
+                ><span class="char correct" data-index="8">e</span
+                ><span class="char correct" data-index="9">e</span
+                ><span class="char correct" data-index="10">t</span
+                ><span class="char correct" data-index="11">i</span
+                ><span class="char correct" data-index="12">n</span
+                ><span class="char correct" data-index="13">g</span
+                ><span class="char current" data-index="14"> </span
+                ><span class="char" data-index="15">=</span
+                ><span class="char" data-index="16"> </span
+                ><span class="char" data-index="17">'</span
+                ><span class="char" data-index="18">H</span
+                ><span class="char" data-index="19">e</span
+                ><span class="char" data-index="20">l</span
+                ><span class="char" data-index="21">l</span
+                ><span class="char" data-index="22">o</span
+                ><span class="char" data-index="23">,</span
+                ><span class="char" data-index="24"> </span
+                ><span class="char" data-index="25">W</span
+                ><span class="char" data-index="26">o</span
+                ><span class="char" data-index="27">r</span
+                ><span class="char" data-index="28">l</span
+                ><span class="char" data-index="29">d</span
+                ><span class="char" data-index="30">!</span
+                ><span class="char" data-index="31">'</span
+                ><span class="char" data-index="32">;</span
+                ><span class="char" data-index="33"> </span
+                ><span class="char" data-index="34">c</span
+                ><span class="char" data-index="35">o</span
+                ><span class="char" data-index="36">n</span
+                ><span class="char" data-index="37">s</span
+                ><span class="char" data-index="38">o</span
+                ><span class="char" data-index="39">l</span
+                ><span class="char" data-index="40">e</span
+                ><span class="char" data-index="41">.</span
+                ><span class="char" data-index="42">l</span
+                ><span class="char" data-index="43">o</span
+                ><span class="char" data-index="44">g</span
+                ><span class="char" data-index="45">(</span
+                ><span class="char" data-index="46">g</span
+                ><span class="char" data-index="47">r</span
+                ><span class="char" data-index="48">e</span
+                ><span class="char" data-index="49">e</span
+                ><span class="char" data-index="50">t</span
+                ><span class="char" data-index="51">i</span
+                ><span class="char" data-index="52">n</span
+                ><span class="char" data-index="53">g</span
+                ><span class="char" data-index="54">)</span
+                ><span class="char" data-index="55">;</span>
+              </div>
+              <input
+                type="text"
+                class="typing-input"
+                id="typing-input"
+                autocomplete="off"
+                autocapitalize="off"
+                spellcheck="false"
+              />
+              <div class="typing-focus-hint hidden" id="typing-focus-hint">
+                Click here or press any key to start typing
+              </div>
+            </div>
+            <div class="typing-controls">
+              <select class="typing-lang-select" id="typing-lang">
+                <option value="js">JavaScript</option>
+                <option value="html">HTML</option>
+                <option value="css">CSS</option>
+                <option value="py">Python</option>
+                <option value="mixed">Mixed</option>
+              </select>
+              <button class="btn btn-outline btn-sm" id="typing-restart">Restart</button>
+            </div>
           </div>
         </div>
       </div>
@@ -2085,13 +3125,32 @@
                 </div>
                 <div class="contact-detail">
                   <h4>Email</h4>
-                  <a href="/cdn-cgi/l/email-protection#ef8b8e818196ded6ddded9d7af88828e8683c18c8082"
-                    ><span
-                      class="__cf_email__"
-                      data-cfemail="ea8e8b848493dbd3d8dbdcd2aa8d878b8386c4898587"
-                      >[email&nbsp;protected]</span
-                    ></a
-                  >
+                  <div class="email-row">
+                    <a
+                      href="/cdn-cgi/l/email-protection#f094919e9e89c1c9c2c1c6c8b0979d91999cde939f9d"
+                      ><span
+                        class="__cf_email__"
+                        data-cfemail="fe9a9f909087cfc7cccfc8c6be99939f9792d09d9193"
+                        >[email&nbsp;protected]</span
+                      ></a
+                    >
+                    <button class="copy-btn" id="copy-email" aria-label="Copy email address">
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      <span class="copy-tooltip">Copied!</span>
+                    </button>
+                  </div>
                 </div>
               </li>
               <li class="contact-item">
@@ -2216,121 +3275,247 @@
     </button>
 
     <!-- ================================
-       JavaScript
+       JavaScript Libraries
        ================================ -->
     <script
       data-cfasync="false"
       src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"
     ></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles-slim@2.12.0/tsparticles.slim.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
     <script>
       /* ---------- AOS Initialize ---------- */
-      AOS.init({
-        duration: 600,
-        once: true,
-        offset: 50,
-        easing: "ease-out-cubic",
+      if (typeof AOS !== "undefined") {
+        AOS.init({ duration: 600, once: true, offset: 50, easing: "ease-out-cubic" });
+      }
+
+      /* Global element references */
+      const html = document.documentElement;
+
+      /* ---------- Text Scramble Effect ---------- */
+      class TextScramble {
+        constructor(el) {
+          this.el = el;
+          this.chars = "!<>-_\\/[]{}—=+*^?#________";
+          this.update = this.update.bind(this);
+        }
+        setText(newText) {
+          const oldText = this.el.innerText;
+          const length = Math.max(oldText.length, newText.length);
+          const promise = new Promise((resolve) => (this.resolve = resolve));
+          this.queue = [];
+          for (let i = 0; i < length; i++) {
+            const from = oldText[i] || "";
+            const to = newText[i] || "";
+            const start = Math.floor(Math.random() * 30);
+            const end = start + Math.floor(Math.random() * 30);
+            this.queue.push({ from, to, start, end });
+          }
+          cancelAnimationFrame(this.frameRequest);
+          this.frame = 0;
+          this.update();
+          return promise;
+        }
+        update() {
+          let output = "";
+          let complete = 0;
+          for (let i = 0, n = this.queue.length; i < n; i++) {
+            let { from, to, start, end, char } = this.queue[i];
+            if (this.frame >= end) {
+              complete++;
+              output += to;
+            } else if (this.frame >= start) {
+              if (!char || Math.random() < 0.28) {
+                char = this.chars[Math.floor(Math.random() * this.chars.length)];
+                this.queue[i].char = char;
+              }
+              output += '<span class="scramble-dud">' + char + "</span>";
+            } else {
+              output += from;
+            }
+          }
+          this.el.innerHTML = output;
+          if (complete === this.queue.length) {
+            this.resolve();
+          } else {
+            this.frameRequest = requestAnimationFrame(this.update);
+            this.frame++;
+          }
+        }
+      }
+
+      const scrambler = new TextScramble(document.getElementById("typewriter"));
+      const scrambleRoles = [
+        "Software Developer",
+        "Web Developer",
+        "Student Developer",
+        "Tech Enthusiast",
+      ];
+      let scrambleIdx = 0;
+      function nextScramble() {
+        scrambler.setText(scrambleRoles[scrambleIdx]).then(() => {
+          setTimeout(() => {
+            scrambleIdx = (scrambleIdx + 1) % scrambleRoles.length;
+            nextScramble();
+          }, 1800);
+        });
+      }
+      nextScramble();
+
+      /* ---------- tsParticles Hero ---------- */
+      async function initParticles() {
+        if (typeof tsParticles === "undefined" || !window.tsParticles) return;
+        const isDark = html.getAttribute("data-theme") === "dark";
+        const color = isDark ? "#ffffff" : "#000000";
+        await tsParticles.load("tsparticles", {
+          fullScreen: { enable: false },
+          particles: {
+            number: { value: 55, density: { enable: true, value_area: 800 } },
+            color: { value: color },
+            shape: { type: "circle" },
+            opacity: { value: 0.25, random: true },
+            size: { value: 2, random: { enable: true, minimumValue: 1 } },
+            links: {
+              enable: true,
+              distance: 150,
+              color: color,
+              opacity: 0.1,
+              width: 1,
+            },
+            move: {
+              enable: true,
+              speed: 0.6,
+              direction: "none",
+              random: true,
+              straight: false,
+              outModes: "out",
+            },
+          },
+          interactivity: {
+            detectsOn: "canvas",
+            events: {
+              onHover: { enable: true, mode: "grab" },
+              onClick: { enable: true, mode: "push" },
+              resize: true,
+            },
+            modes: {
+              grab: { distance: 140, links: { opacity: 0.25 } },
+              push: { quantity: 4 },
+            },
+          },
+          detectRetina: true,
+        });
+      }
+
+      function updateParticlesTheme() {
+        const container = tsParticles.dom().length ? tsParticles.dom()[0] : null;
+        if (!container) return;
+        const isDark = html.getAttribute("data-theme") === "dark";
+        const color = isDark ? "#ffffff" : "#000000";
+        container.options.particles.color.value = color;
+        container.options.particles.links.color = color;
+        container.refresh();
+      }
+
+      /* ---------- Spotlight / Glow Cards ---------- */
+      function initSpotlight() {
+        document.querySelectorAll(".spotlight-card").forEach((card) => {
+          card.addEventListener("mousemove", (e) => {
+            const rect = card.getBoundingClientRect();
+            card.style.setProperty("--mouse-x", e.clientX - rect.left + "px");
+            card.style.setProperty("--mouse-y", e.clientY - rect.top + "px");
+          });
+        });
+      }
+      initSpotlight();
+
+      /* ---------- Custom Cursor ---------- */
+      const cursor = document.getElementById("custom-cursor");
+      const cursorDot = document.getElementById("custom-cursor-dot");
+      let cX = 0,
+        cY = 0,
+        dX = 0,
+        dY = 0;
+      document.addEventListener("mousemove", (e) => {
+        cX = e.clientX;
+        cY = e.clientY;
+      });
+      function animateCursor() {
+        dX += (cX - dX) * 0.14;
+        dY += (cY - dY) * 0.14;
+        cursor.style.left = cX + "px";
+        cursor.style.top = cY + "px";
+        cursorDot.style.left = dX + "px";
+        cursorDot.style.top = dY + "px";
+        requestAnimationFrame(animateCursor);
+      }
+      if (window.matchMedia("(pointer: fine)").matches) animateCursor();
+      document
+        .querySelectorAll(
+          "a, button, .project-card, .skill-card, .gallery-thumb, .form-input, .form-textarea, .carousel-arrow, .carousel-dot, .modal-close, .modal-nav, .robot-btn, .game-tab, .copy-btn, .typing-box",
+        )
+        .forEach((el) => {
+          el.addEventListener("mouseenter", () => cursor.classList.add("hover"));
+          el.addEventListener("mouseleave", () => cursor.classList.remove("hover"));
+        });
+
+      /* ---------- Scroll Progress Bar ---------- */
+      const scrollProgress = document.getElementById("scroll-progress");
+      window.addEventListener("scroll", () => {
+        const st = window.scrollY;
+        const docH = document.documentElement.scrollHeight - window.innerHeight;
+        scrollProgress.style.width = (st / docH) * 100 + "%";
       });
 
       /* ---------- GitHub Stats Theme Switcher ---------- */
       const githubStatImages = document.querySelectorAll(".github-stat-img");
-
       function updateGitHubStatsTheme() {
         const isDark = html.getAttribute("data-theme") === "dark";
         githubStatImages.forEach((img) => {
           const newSrc = isDark ? img.dataset.darkSrc : img.dataset.lightSrc;
-          if (img.src !== newSrc) {
-            img.src = newSrc;
-          }
+          if (img.src !== newSrc) img.src = newSrc;
         });
       }
 
       /* ---------- Theme Toggle ---------- */
       const themeToggle = document.getElementById("theme-toggle");
-      const html = document.documentElement;
       const STORAGE_KEY = "theme";
-
       function getPreferredTheme() {
         const stored = localStorage.getItem(STORAGE_KEY);
         if (stored) return stored;
         return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
       }
-
       function applyTheme(theme) {
-        if (theme === "dark") {
-          html.setAttribute("data-theme", "dark");
-        } else {
-          html.removeAttribute("data-theme");
-        }
+        if (theme === "dark") html.setAttribute("data-theme", "dark");
+        else html.removeAttribute("data-theme");
         updateGitHubStatsTheme();
+        if (typeof tsParticles !== "undefined" && window.tsParticles) updateParticlesTheme();
       }
-
       function toggleTheme() {
         const isDark = html.getAttribute("data-theme") === "dark";
         const next = isDark ? "light" : "dark";
         applyTheme(next);
         localStorage.setItem(STORAGE_KEY, next);
       }
-
-      // Initialize theme early
       applyTheme(getPreferredTheme());
-
       themeToggle.addEventListener("click", toggleTheme);
-
-      // Listen for system theme changes when no manual preference is stored
       window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
-        if (!localStorage.getItem(STORAGE_KEY)) {
-          applyTheme(e.matches ? "dark" : "light");
-        }
+        if (!localStorage.getItem(STORAGE_KEY)) applyTheme(e.matches ? "dark" : "light");
       });
-
-      /* ---------- Typewriter Effect ---------- */
-      const roles = ["Software Developer", "Web Developer", "Student Developer", "Tech Enthusiast"];
-      const typewriterEl = document.getElementById("typewriter");
-      let roleIndex = 0;
-      let charIndex = 0;
-      let isDeleting = false;
-
-      function typeWriter() {
-        const current = roles[roleIndex];
-
-        if (isDeleting) {
-          typewriterEl.textContent = current.substring(0, charIndex - 1);
-          charIndex--;
-        } else {
-          typewriterEl.textContent = current.substring(0, charIndex + 1);
-          charIndex++;
-        }
-
-        let speed = isDeleting ? 50 : 100;
-
-        if (!isDeleting && charIndex === current.length) {
-          speed = 1500;
-          isDeleting = true;
-        } else if (isDeleting && charIndex === 0) {
-          isDeleting = false;
-          roleIndex = (roleIndex + 1) % roles.length;
-          speed = 500;
-        }
-
-        setTimeout(typeWriter, speed);
-      }
-
-      setTimeout(typeWriter, 500);
+      updateGitHubStatsTheme();
 
       /* ---------- Mobile Navigation ---------- */
       const hamburger = document.getElementById("hamburger");
       const navLinks = document.getElementById("nav-links");
-      const navLinkItems = document.querySelectorAll(".nav-links a");
-
       hamburger.addEventListener("click", () => {
         hamburger.classList.toggle("active");
         navLinks.classList.toggle("active");
         const expanded = hamburger.getAttribute("aria-expanded") === "true";
         hamburger.setAttribute("aria-expanded", String(!expanded));
       });
-
-      navLinkItems.forEach((link) => {
+      document.querySelectorAll(".nav-links a").forEach((link) => {
         link.addEventListener("click", () => {
           hamburger.classList.remove("active");
           navLinks.classList.remove("active");
@@ -2340,25 +3525,14 @@
 
       /* ---------- Back to Top ---------- */
       const backToTopBtn = document.getElementById("back-to-top");
-
       window.addEventListener("scroll", () => {
-        if (window.scrollY > 400) {
-          backToTopBtn.classList.add("visible");
-        } else {
-          backToTopBtn.classList.remove("visible");
-        }
-
+        if (window.scrollY > 400) backToTopBtn.classList.add("visible");
+        else backToTopBtn.classList.remove("visible");
         const navbar = document.getElementById("navbar");
-        if (window.scrollY > 10) {
-          navbar.classList.add("scrolled");
-        } else {
-          navbar.classList.remove("scrolled");
-        }
+        if (window.scrollY > 10) navbar.classList.add("scrolled");
+        else navbar.classList.remove("scrolled");
       });
-
-      backToTopBtn.addEventListener("click", () => {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      });
+      backToTopBtn.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
 
       /* ---------- Image Fallback ---------- */
       document.querySelectorAll("img").forEach((img) => {
@@ -2368,7 +3542,7 @@
         });
       });
 
-      /* ---------- Smooth Scroll for Anchor Links ---------- */
+      /* ---------- Smooth Scroll ---------- */
       document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
         anchor.addEventListener("click", function (e) {
           const targetId = this.getAttribute("href");
@@ -2387,25 +3561,17 @@
         basicsocmed: ["assets/feeds.png", "assets/socmed2.png", "assets/socmed3.png"],
         batchzone: ["assets/batchz1.png", "assets/batchz2.png", "assets/batchz3.png"],
       };
-
       const modal = document.getElementById("gallery-modal");
       const modalImg = modal.querySelector(".modal-image");
       const modalCounter = modal.querySelector(".modal-counter");
-      const modalClose = modal.querySelector(".modal-close");
-      const modalPrev = modal.querySelector(".modal-prev");
-      const modalNext = modal.querySelector(".modal-next");
-      const modalBackdrop = modal.querySelector(".modal-backdrop");
-
       let currentProject = null;
       let currentIndex = 0;
-
       function updateModal() {
         const images = projectImages[currentProject];
         modalImg.src = images[currentIndex];
         modalImg.alt = currentProject + " screenshot " + (currentIndex + 1);
         modalCounter.textContent = currentIndex + 1 + " / " + images.length;
       }
-
       function openModal(project, index) {
         currentProject = project;
         currentIndex = index;
@@ -2414,38 +3580,32 @@
         modal.setAttribute("aria-hidden", "false");
         document.body.style.overflow = "hidden";
       }
-
       function closeModal() {
         modal.classList.remove("active");
         modal.setAttribute("aria-hidden", "true");
         document.body.style.overflow = "";
       }
-
       function prevImage() {
         if (!currentProject) return;
         const images = projectImages[currentProject];
         currentIndex = (currentIndex - 1 + images.length) % images.length;
         updateModal();
       }
-
       function nextImage() {
         if (!currentProject) return;
         const images = projectImages[currentProject];
         currentIndex = (currentIndex + 1) % images.length;
         updateModal();
       }
-
       document.querySelectorAll(".gallery-thumb").forEach((thumb) => {
-        thumb.addEventListener("click", () => {
-          openModal(thumb.dataset.project, parseInt(thumb.dataset.index));
-        });
+        thumb.addEventListener("click", () =>
+          openModal(thumb.dataset.project, parseInt(thumb.dataset.index)),
+        );
       });
-
-      modalClose.addEventListener("click", closeModal);
-      modalBackdrop.addEventListener("click", closeModal);
-      modalPrev.addEventListener("click", prevImage);
-      modalNext.addEventListener("click", nextImage);
-
+      modal.querySelector(".modal-close").addEventListener("click", closeModal);
+      modal.querySelector(".modal-backdrop").addEventListener("click", closeModal);
+      modal.querySelector(".modal-prev").addEventListener("click", prevImage);
+      modal.querySelector(".modal-next").addEventListener("click", nextImage);
       document.addEventListener("keydown", (e) => {
         if (!modal.classList.contains("active")) return;
         if (e.key === "Escape") closeModal();
@@ -2456,46 +3616,598 @@
       /* ---------- Testimonials Carousel ---------- */
       const slidesContainer = document.getElementById("testimonials-slides");
       const dots = document.querySelectorAll(".carousel-dot");
-      const prevBtn = document.getElementById("test-prev");
-      const nextBtn = document.getElementById("test-next");
       let currentSlide = 0;
       const totalSlides = dots.length;
-
       function goToSlide(index) {
         currentSlide = index;
         slidesContainer.style.transform = "translateX(" + -index * 100 + "%)";
-        dots.forEach((dot, i) => {
-          dot.classList.toggle("active", i === index);
-        });
+        dots.forEach((dot, i) => dot.classList.toggle("active", i === index));
       }
-
-      prevBtn.addEventListener("click", () => {
-        goToSlide((currentSlide - 1 + totalSlides) % totalSlides);
-      });
-
-      nextBtn.addEventListener("click", () => {
-        goToSlide((currentSlide + 1) % totalSlides);
-      });
-
-      dots.forEach((dot) => {
-        dot.addEventListener("click", () => {
-          goToSlide(parseInt(dot.dataset.index));
-        });
-      });
-
-      // Auto-advance every 6 seconds
-      let autoPlay = setInterval(() => {
-        goToSlide((currentSlide + 1) % totalSlides);
-      }, 6000);
-
-      // Pause on hover
+      document
+        .getElementById("test-prev")
+        .addEventListener("click", () => goToSlide((currentSlide - 1 + totalSlides) % totalSlides));
+      document
+        .getElementById("test-next")
+        .addEventListener("click", () => goToSlide((currentSlide + 1) % totalSlides));
+      dots.forEach((dot) =>
+        dot.addEventListener("click", () => goToSlide(parseInt(dot.dataset.index))),
+      );
+      let autoPlay = setInterval(() => goToSlide((currentSlide + 1) % totalSlides), 6000);
       const carousel = document.querySelector(".testimonials-carousel");
       carousel.addEventListener("mouseenter", () => clearInterval(autoPlay));
       carousel.addEventListener("mouseleave", () => {
-        autoPlay = setInterval(() => {
-          goToSlide((currentSlide + 1) % totalSlides);
-        }, 6000);
+        autoPlay = setInterval(() => goToSlide((currentSlide + 1) % totalSlides), 6000);
       });
+
+      /* ---------- Contact Form Confetti ---------- */
+      const contactForm = document.getElementById("contact-form");
+      contactForm.addEventListener("submit", function () {
+        const isDark = html.getAttribute("data-theme") === "dark";
+        if (typeof confetti !== "undefined" && window.confetti) {
+          confetti({
+            particleCount: 120,
+            spread: 80,
+            origin: { y: 0.75 },
+            colors: isDark ? ["#ffffff", "#888888", "#444444"] : ["#000000", "#666666", "#aaaaaa"],
+            disableForReducedMotion: true,
+          });
+        }
+      });
+
+      /* ---------- Copy Email ---------- */
+      const copyEmailBtn = document.getElementById("copy-email");
+      copyEmailBtn.addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText("danny192168@gmail.com");
+          copyEmailBtn.classList.add("copied");
+          setTimeout(() => copyEmailBtn.classList.remove("copied"), 2000);
+        } catch (err) {
+          console.error("Failed to copy", err);
+        }
+      });
+
+      /* ================================
+         GAME 1: TERMINAL
+         ================================ */
+      (function initTerminal() {
+        const termBody = document.getElementById("terminal-body");
+        const termInput = document.getElementById("term-input");
+        const promptHTML = '<span class="term-prompt">$</span>';
+
+        const commands = {
+          help: `Available commands:\n  about       - Learn about Danny\n  skills      - List technical skills\n  projects    - Show project highlights\n  contact     - Display contact info\n  hack        - Start a mini decryption challenge\n  clear       - Clear the terminal`,
+          about:
+            "Danny is a Computer Science student at the University of the Cordilleras in Baguio City, Philippines. Self-taught developer with experience in web development, cybersecurity basics, and robotics.",
+          skills:
+            "Frontend: HTML5, CSS3, JavaScript (ES6+), Responsive Design\nBackend: Firebase, Firestore, Authentication\nTools: Git, VS Code, DevTools, Figma\nSpecialized: Cybersecurity basics, Robotics, Problem Solving",
+          projects:
+            "1. Cat-bolz - Firebase messaging app (Grade 11)\n2. Basic-SocMed - Social media with auth & image uploads\n3. Batchzone - Interactive JavaScript web app",
+          contact:
+            "Email: danny192168@gmail.com\nPhone: 09452863646\nLocation: Baguio City, Philippines",
+        };
+
+        let hackActive = false;
+        let hackTarget = "";
+        let hackAttempts = 0;
+
+        function printLine(text, type) {
+          const div = document.createElement("div");
+          div.className = "term-line term-output" + (type ? " " + type : "");
+          div.textContent = text;
+          termBody.insertBefore(div, termBody.lastElementChild);
+          termBody.scrollTop = termBody.scrollHeight;
+        }
+
+        function handleCommand(raw) {
+          const line = document.createElement("div");
+          line.className = "term-line";
+          line.innerHTML = promptHTML + ' <span class="term-cmd">' + raw + "</span>";
+          termBody.insertBefore(line, termBody.lastElementChild);
+
+          const input = raw.trim().toLowerCase();
+          if (!input) return;
+
+          if (hackActive) {
+            hackAttempts++;
+            if (input === hackTarget.toLowerCase()) {
+              printLine("ACCESS GRANTED. Decryption successful!", "success");
+              printLine("Attempts: " + hackAttempts, "info");
+              if (typeof confetti !== "undefined" && window.confetti) {
+                confetti({
+                  particleCount: 80,
+                  spread: 70,
+                  origin: { y: 0.6 },
+                  colors: ["#27c93f", "#60a5fa", "#ffbd2e"],
+                });
+              }
+              hackActive = false;
+            } else {
+              printLine("ACCESS DENIED. Wrong key. Try again.", "error");
+            }
+            return;
+          }
+
+          if (commands[input]) {
+            printLine(commands[input], "info");
+          } else if (input === "clear") {
+            const keep = termBody.lastElementChild;
+            termBody.innerHTML = "";
+            termBody.appendChild(keep);
+          } else if (input === "hack") {
+            const words = [
+              "firestore",
+              "javascript",
+              "firebase",
+              "algorithm",
+              "developer",
+              "frontend",
+              "robotics",
+              "cybersec",
+            ];
+            hackTarget = words[Math.floor(Math.random() * words.length)];
+            hackAttempts = 0;
+            hackActive = true;
+            printLine("=== MINI DECRYPTION CHALLENGE ===", "warn");
+            printLine("The system has encrypted a word. Your hint:", "info");
+            const hint = hackTarget
+              .split("")
+              .map((ch, i) => (i === 0 ? ch : "_"))
+              .join(" ");
+            printLine("Hint: " + hint + " (length: " + hackTarget.length + ")", "warn");
+            printLine("Type your guess and press Enter.", "info");
+          } else {
+            printLine(
+              'Command not found: "' + input + '". Type "help" for available commands.',
+              "error",
+            );
+          }
+        }
+
+        termInput.addEventListener("keydown", (e) => {
+          if (e.key === "Enter") {
+            handleCommand(termInput.value);
+            termInput.value = "";
+          }
+        });
+        termBody.addEventListener("click", () => termInput.focus());
+        termInput.focus();
+      })();
+
+      /* ================================
+         GAME 2: ROBOT PUZZLE
+         ================================ */
+      (function initRobot() {
+        const gridEl = document.getElementById("robot-grid");
+        const programEl = document.getElementById("robot-program");
+        const statusEl = document.getElementById("robot-status");
+        const levelLabel = document.getElementById("robot-level-label");
+        const movesLabel = document.getElementById("robot-moves-label");
+
+        const levels = [
+          {
+            name: "Level 1: Straight Ahead",
+            grid: [
+              0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+              0, 0, 0, 0, 0, 0, 0,
+            ],
+            start: { r: 2, c: 0, dir: "right" },
+          },
+          {
+            name: "Level 2: The Corner",
+            grid: [
+              0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0,
+              3, 0, 0, 0, 0, 0, 0,
+            ],
+            start: { r: 2, c: 0, dir: "right" },
+          },
+          {
+            name: "Level 3: Zig Zag",
+            grid: [
+              0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+              3, 0, 0, 1, 1, 0, 0,
+            ],
+            start: { r: 2, c: 0, dir: "right" },
+          },
+          {
+            name: "Level 4: The Maze",
+            grid: [
+              0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1,
+              0, 0, 0, 0, 3, 0, 0,
+            ],
+            start: { r: 2, c: 0, dir: "right" },
+          },
+        ];
+
+        let levelIdx = 0;
+        let program = [];
+        let robotPos = null;
+        let isRunning = false;
+        let moveCount = 0;
+
+        const dirMap = { up: [-1, 0], down: [1, 0], left: [0, -1], right: [0, 1] };
+        const turnLeft = { up: "left", left: "down", down: "right", right: "up" };
+        const turnRight = { up: "right", right: "down", down: "left", left: "up" };
+
+        function renderGrid(highlightPath) {
+          gridEl.innerHTML = "";
+          const lvl = levels[levelIdx];
+          const pathSet = new Set((highlightPath || []).map((p) => p.r + "," + p.c));
+          for (let r = 0; r < 6; r++) {
+            for (let c = 0; c < 6; c++) {
+              const cell = document.createElement("div");
+              cell.className = "robot-cell";
+              const val = lvl.grid[r * 6 + c];
+              if (val === 1) cell.classList.add("wall");
+              if (val === 3) cell.classList.add("goal");
+              if (robotPos && robotPos.r === r && robotPos.c === c) {
+                cell.classList.add("robot");
+                const arrows = { up: "↑", down: "↓", left: "←", right: "→" };
+                cell.textContent = arrows[robotPos.dir];
+              } else if (val === 2) {
+                cell.textContent = "🤖";
+              } else if (val === 3) {
+                cell.textContent = "🏁";
+              } else if (pathSet.has(r + "," + c)) {
+                cell.classList.add("path");
+              }
+              gridEl.appendChild(cell);
+            }
+          }
+        }
+
+        function resetRobot() {
+          const s = levels[levelIdx].start;
+          robotPos = { r: s.r, c: s.c, dir: s.dir };
+          moveCount = 0;
+          movesLabel.textContent = "Moves: 0";
+          renderGrid();
+        }
+
+        function renderProgram() {
+          if (program.length === 0) {
+            programEl.innerHTML =
+              '<span style="color:var(--text-muted);font-size:0.8rem;">Your program will appear here...</span>';
+            return;
+          }
+          programEl.innerHTML = "";
+          program.forEach((cmd, i) => {
+            const span = document.createElement("span");
+            span.className = "robot-cmd";
+            if (cmd.startsWith("loop")) span.classList.add("loop-start");
+            if (cmd === "endloop") span.classList.add("loop-end");
+            const labels = {
+              forward: "↑ Forward",
+              left: "↺ Left",
+              right: "↻ Right",
+              loop2: "🔁 ×2",
+              loop3: "🔁 ×3",
+              endloop: "🔚 End",
+            };
+            span.textContent = labels[cmd] || cmd;
+            span.title = "Click to remove";
+            span.style.cursor = "pointer";
+            span.addEventListener("click", () => {
+              if (isRunning) return;
+              program.splice(i, 1);
+              renderProgram();
+            });
+            programEl.appendChild(span);
+          });
+        }
+
+        function compileProgram() {
+          const out = [];
+          const stack = [];
+          for (let i = 0; i < program.length; i++) {
+            const cmd = program[i];
+            if (cmd.startsWith("loop")) {
+              const count = parseInt(cmd.replace("loop", ""));
+              stack.push({ count, start: out.length });
+            } else if (cmd === "endloop") {
+              const frame = stack.pop();
+              if (!frame) continue;
+              const segment = out.slice(frame.start);
+              for (let r = 1; r < frame.count; r++) out.push(...segment);
+            } else {
+              out.push(cmd);
+            }
+          }
+          return out;
+        }
+
+        async function runProgram() {
+          if (isRunning) return;
+          isRunning = true;
+          statusEl.textContent = "Running...";
+          statusEl.className = "robot-status";
+          resetRobot();
+          await new Promise((r) => setTimeout(r, 300));
+
+          const cmds = compileProgram();
+          const path = [{ r: robotPos.r, c: robotPos.c }];
+          const lvl = levels[levelIdx];
+
+          for (let i = 0; i < cmds.length; i++) {
+            const cmd = cmds[i];
+            if (cmd === "forward") {
+              const d = dirMap[robotPos.dir];
+              const nr = robotPos.r + d[0];
+              const nc = robotPos.c + d[1];
+              if (nr < 0 || nr >= 6 || nc < 0 || nc >= 6 || lvl.grid[nr * 6 + nc] === 1) {
+                statusEl.textContent = "Crashed into a wall! Reset and try again.";
+                statusEl.className = "robot-status fail";
+                isRunning = false;
+                return;
+              }
+              robotPos.r = nr;
+              robotPos.c = nc;
+              moveCount++;
+              path.push({ r: nr, c: nc });
+              renderGrid(path);
+              movesLabel.textContent = "Moves: " + moveCount;
+              await new Promise((r) => setTimeout(r, 350));
+            } else if (cmd === "left") {
+              robotPos.dir = turnLeft[robotPos.dir];
+              renderGrid(path);
+              await new Promise((r) => setTimeout(r, 250));
+            } else if (cmd === "right") {
+              robotPos.dir = turnRight[robotPos.dir];
+              renderGrid(path);
+              await new Promise((r) => setTimeout(r, 250));
+            }
+          }
+
+          if (robotPos.r === 5 && robotPos.c === 3 && lvl.grid[5 * 6 + 3] === 3) {
+            statusEl.textContent = "Goal reached! Level complete.";
+            statusEl.className = "robot-status win";
+            if (typeof confetti !== "undefined" && window.confetti) {
+              confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.55 },
+                colors: ["#22c55e", "#60a5fa", "#fbbf24"],
+              });
+            }
+            await new Promise((r) => setTimeout(r, 1200));
+            if (levelIdx < levels.length - 1) {
+              levelIdx++;
+              program = [];
+              renderProgram();
+              levelLabel.textContent = "Level " + (levelIdx + 1) + " of " + levels.length;
+              statusEl.textContent =
+                levels[levelIdx].name + ". Program the robot to reach the goal.";
+              statusEl.className = "robot-status";
+              resetRobot();
+            } else {
+              statusEl.textContent = "All levels completed! You're a master programmer.";
+            }
+          } else {
+            statusEl.textContent = "Robot stopped before reaching the goal. Try again.";
+            statusEl.className = "robot-status fail";
+          }
+          isRunning = false;
+        }
+
+        document.querySelectorAll(".robot-btn[data-cmd]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            if (isRunning) return;
+            program.push(btn.dataset.cmd);
+            renderProgram();
+          });
+        });
+        document.getElementById("robot-run").addEventListener("click", runProgram);
+        document.getElementById("robot-clear").addEventListener("click", () => {
+          if (isRunning) return;
+          program = [];
+          renderProgram();
+          resetRobot();
+          statusEl.textContent = "Program the robot to reach the green goal.";
+          statusEl.className = "robot-status";
+        });
+        document.getElementById("robot-reset").addEventListener("click", () => {
+          program = [];
+          renderProgram();
+          resetRobot();
+          statusEl.textContent = "Program the robot to reach the green goal.";
+          statusEl.className = "robot-status";
+        });
+
+        levelLabel.textContent = "Level " + (levelIdx + 1) + " of " + levels.length;
+        statusEl.textContent =
+          levels[levelIdx].name + ". Program the robot to reach the green goal.";
+        resetRobot();
+      })();
+
+      /* ================================
+         GAME 3: TYPING CHALLENGE
+         ================================ */
+      (function initTyping() {
+        const snippets = {
+          js: [
+            "const greeting = 'Hello, World!';\nconsole.log(greeting);",
+            "function sum(a, b) {\n  return a + b;\n}",
+            "const users = ['Alice', 'Bob', 'Charlie'];\nusers.forEach(u => console.log(u));",
+            "async function fetchData() {\n  const res = await fetch('/api/data');\n  return res.json();\n}",
+            "const isEven = num => num % 2 === 0;\nconst nums = [1, 2, 3, 4, 5];",
+          ],
+          html: [
+            '<div class="container">\n  <h1>Hello World</h1>\n  <p>Welcome to my site.</p>\n</div>',
+            '<nav>\n  <a href="#home">Home</a>\n  <a href="#about">About</a>\n</nav>',
+            '<form action="/submit" method="POST">\n  <input type="text" name="user" />\n  <button>Send</button>\n</form>',
+            '<section id="hero">\n  <img src="hero.jpg" alt="Hero" />\n  <h2>Welcome</h2>\n</section>',
+            '<ul class="list">\n  <li>Item One</li>\n  <li>Item Two</li>\n  <li>Item Three</li>\n</ul>',
+          ],
+          css: [
+            ".card {\n  background: #fff;\n  border-radius: 12px;\n  padding: 1.5rem;\n}",
+            "@media (max-width: 768px) {\n  .grid {\n    grid-template-columns: 1fr;\n  }\n}",
+            ":root {\n  --primary: #000;\n  --secondary: #666;\n}",
+            ".btn:hover {\n  transform: translateY(-2px);\n  box-shadow: 0 4px 12px rgba(0,0,0,0.15);\n}",
+            "nav a::after {\n  content: '';\n  width: 0;\n  height: 2px;\n  background: #000;\n}",
+          ],
+          py: [
+            "def greet(name):\n    return f'Hello, {name}!'\n\nprint(greet('Danny'))",
+            "numbers = [1, 2, 3, 4, 5]\nsquared = [n ** 2 for n in numbers]",
+            "import random\nprint(random.randint(1, 100))",
+            "with open('data.txt', 'r') as f:\n    content = f.read()",
+            "class Robot:\n    def __init__(self, name):\n        self.name = name\n\n    def move(self):\n        print(f'{self.name} is moving')",
+          ],
+          mixed: [
+            "const app = document.getElementById('app');\napp.innerHTML = '<h1>Hello</h1>';",
+            "def fib(n):\n    if n <= 1:\n        return n\n    return fib(n-1) + fib(n-2)",
+            ".hero {\n  display: flex;\n  align-items: center;\n  min-height: 100vh;\n}",
+            '<article class="card">\n  <h3>Title</h3>\n  <p>Description goes here.</p>\n</article>',
+            "fetch('/api/user')\n  .then(r => r.json())\n  .then(data => console.log(data));",
+          ],
+        };
+
+        const textEl = document.getElementById("typing-text");
+        const inputEl = document.getElementById("typing-input");
+        const wpmEl = document.getElementById("typing-wpm");
+        const accEl = document.getElementById("typing-acc");
+        const timeEl = document.getElementById("typing-time");
+        const langSelect = document.getElementById("typing-lang");
+        const resultsPanel = document.getElementById("typing-results");
+        const focusHint = document.getElementById("typing-focus-hint");
+        const box = document.getElementById("typing-box");
+
+        let currentText = "";
+        let timer = null;
+        let timeLeft = 60;
+        let started = false;
+        let correctChars = 0;
+        let totalKeystrokes = 0;
+        let currentIndex = 0;
+
+        function pickText() {
+          const lang = langSelect.value;
+          const pool = snippets[lang] || snippets.mixed;
+          return pool[Math.floor(Math.random() * pool.length)];
+        }
+
+        function renderText() {
+          textEl.innerHTML = "";
+          currentText.split("").forEach((ch, i) => {
+            const span = document.createElement("span");
+            span.className = "char";
+            span.textContent = ch;
+            span.dataset.index = i;
+            textEl.appendChild(span);
+          });
+        }
+
+        function startGame() {
+          currentText = pickText();
+          renderText();
+          inputEl.value = "";
+          started = false;
+          timeLeft = 60;
+          correctChars = 0;
+          totalKeystrokes = 0;
+          currentIndex = 0;
+          wpmEl.textContent = "0";
+          accEl.textContent = "100%";
+          timeEl.textContent = "60";
+          resultsPanel.classList.remove("show");
+          if (timer) clearInterval(timer);
+          inputEl.focus();
+        }
+
+        function endGame() {
+          clearInterval(timer);
+          timer = null;
+          const timeTaken = 60 - timeLeft;
+          const minutes = timeTaken / 60;
+          const grossWPM = minutes > 0 ? Math.round(correctChars / 5 / minutes) : 0;
+          const accuracy =
+            totalKeystrokes > 0 ? Math.round((correctChars / totalKeystrokes) * 100) : 100;
+          document.getElementById("result-wpm").textContent = grossWPM;
+          document.getElementById("result-acc").textContent = accuracy + "%";
+          document.getElementById("result-chars").textContent = correctChars;
+          resultsPanel.classList.add("show");
+          textEl.innerHTML = "";
+          if (typeof confetti !== "undefined" && window.confetti && grossWPM > 30) {
+            confetti({
+              particleCount: 90,
+              spread: 70,
+              origin: { y: 0.6 },
+              colors: ["#22c55e", "#60a5fa", "#f59e0b"],
+            });
+          }
+        }
+
+        inputEl.addEventListener("input", () => {
+          if (!started) {
+            started = true;
+            timer = setInterval(() => {
+              timeLeft--;
+              timeEl.textContent = timeLeft;
+              if (timeLeft <= 0) endGame();
+            }, 1000);
+          }
+          const val = inputEl.value;
+          totalKeystrokes = val.length;
+          correctChars = 0;
+          currentIndex = val.length;
+          const chars = textEl.querySelectorAll(".char");
+          chars.forEach((span, i) => {
+            span.classList.remove("correct", "wrong", "current");
+            if (i < val.length) {
+              if (val[i] === currentText[i]) {
+                span.classList.add("correct");
+                correctChars++;
+              } else {
+                span.classList.add("wrong");
+              }
+            } else if (i === val.length) {
+              span.classList.add("current");
+            }
+          });
+          const timeTaken = 60 - timeLeft;
+          const minutes = Math.max(timeTaken / 60, 0.01);
+          const grossWPM = Math.round(correctChars / 5 / minutes);
+          const accuracy =
+            totalKeystrokes > 0 ? Math.round((correctChars / totalKeystrokes) * 100) : 100;
+          wpmEl.textContent = grossWPM;
+          accEl.textContent = accuracy + "%";
+          if (val.length >= currentText.length) {
+            endGame();
+          }
+        });
+
+        box.addEventListener("click", () => {
+          focusHint.classList.add("hidden");
+          inputEl.focus();
+        });
+        inputEl.addEventListener("focus", () => focusHint.classList.add("hidden"));
+        inputEl.addEventListener("blur", () => {
+          if (inputEl.value.length === 0) focusHint.classList.remove("hidden");
+        });
+        document.getElementById("typing-restart").addEventListener("click", startGame);
+        langSelect.addEventListener("change", startGame);
+
+        startGame();
+      })();
+
+      /* ================================
+         GAME TABS
+         ================================ */
+      (function initGameTabs() {
+        const tabs = document.querySelectorAll(".game-tab");
+        const panels = document.querySelectorAll(".game-panel");
+        tabs.forEach((tab) => {
+          tab.addEventListener("click", () => {
+            tabs.forEach((t) => t.classList.remove("active"));
+            panels.forEach((p) => p.classList.remove("active"));
+            tab.classList.add("active");
+            document.getElementById("panel-" + tab.dataset.game).classList.add("active");
+          });
+        });
+      })();
+
+      /* ---------- Init Particles ---------- */
+      if (typeof tsParticles !== "undefined") initParticles();
     </script>
   </body>
 </html>
+
+<!-- BANANANA  -->
