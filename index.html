@@ -387,45 +387,153 @@
       }
 
       /* ================================
-       Theme Toggle
+       Tablet "More" Dropdown
        ================================ */
-      .theme-toggle {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        border: 1.5px solid var(--border);
-        background: transparent;
-        cursor: pointer;
+      .nav-more-wrap {
         display: flex;
         align-items: center;
-        justify-content: center;
+        gap: 2rem;
+      }
+
+      .nav-more-btn {
+        display: none;
+        background: transparent;
+        border: none;
+        font-family: "Poppins", sans-serif;
+        font-size: 0.9rem;
+        font-weight: 500;
         color: var(--text-dark);
-        transition: all 0.2s ease;
-        margin-right: 0.75rem;
+        cursor: pointer;
+        padding: 0.25rem 0;
+        transition: color 0.2s ease;
+        align-items: center;
+        gap: 0.35rem;
       }
 
-      .theme-toggle:hover {
-        border-color: var(--primary);
-        transform: translateY(-2px);
+      .nav-more-btn::after {
+        content: "▾";
+        font-size: 0.65rem;
+        opacity: 0.5;
+        transition: transform 0.2s ease;
+        display: inline-block;
       }
 
-      .theme-icon {
-        width: 20px;
-        height: 20px;
+      .nav-more-btn[aria-expanded="true"]::after {
+        transform: rotate(180deg);
       }
 
-      .sun-icon {
-        display: block;
-      }
-      .moon-icon {
-        display: none;
+      .nav-more-btn:hover {
+        color: var(--primary);
       }
 
-      [data-theme="dark"] .sun-icon {
-        display: none;
+      .nav-secondary {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
       }
-      [data-theme="dark"] .moon-icon {
-        display: block;
+
+      /* ================================
+       Grayscale Sky Theme Toggle
+       ================================ */
+      .sky-toggle {
+        width: 72px;
+        height: 32px;
+        border-radius: 999px;
+        background: linear-gradient(180deg, #e5e5e5 0%, #d4d4d4 100%);
+        position: relative;
+        cursor: pointer;
+        overflow: hidden;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        transition: background 0.6s ease;
+        padding: 0;
+        flex-shrink: 0;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .sky-toggle .celestial {
+        position: absolute;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        top: 3px;
+        left: 4px;
+        background: #fff;
+        transition: all 0.6s cubic-bezier(0.68, -0.3, 0.32, 1.2);
+        box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+        z-index: 2;
+      }
+
+      .sky-toggle .cloud {
+        position: absolute;
+        background: rgba(0, 0, 0, 0.1);
+        border-radius: 999px;
+        transition: all 0.6s ease;
+        z-index: 1;
+      }
+
+      .sky-toggle .cloud:nth-of-type(2) {
+        width: 16px;
+        height: 6px;
+        top: 7px;
+        left: 38px;
+        opacity: 1;
+      }
+
+      .sky-toggle .cloud:nth-of-type(3) {
+        width: 10px;
+        height: 4px;
+        top: 19px;
+        left: 54px;
+        opacity: 1;
+      }
+
+      .sky-toggle .star {
+        position: absolute;
+        width: 2px;
+        height: 2px;
+        background: #fff;
+        border-radius: 50%;
+        opacity: 0;
+        transition: all 0.6s ease;
+        z-index: 1;
+      }
+
+      .sky-toggle .star:nth-of-type(4) {
+        top: 5px;
+        left: 14px;
+      }
+
+      .sky-toggle .star:nth-of-type(5) {
+        top: 16px;
+        left: 36px;
+        width: 1.5px;
+        height: 1.5px;
+      }
+
+      .sky-toggle .star:nth-of-type(6) {
+        top: 6px;
+        left: 52px;
+      }
+
+      /* Dark mode: sky turns charcoal, sun becomes pale moon, stars appear */
+      [data-theme="dark"] .sky-toggle {
+        background: linear-gradient(180deg, #171717 0%, #262626 100%);
+        border-color: rgba(255, 255, 255, 0.08);
+      }
+
+      [data-theme="dark"] .sky-toggle .celestial {
+        transform: translateX(38px);
+        background: #f5f5f5;
+        box-shadow: 0 0 6px rgba(255, 255, 255, 0.2);
+      }
+
+      [data-theme="dark"] .sky-toggle .cloud {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+
+      [data-theme="dark"] .sky-toggle .star {
+        opacity: 1;
       }
 
       /* ================================
@@ -1657,7 +1765,9 @@
       .typing-lang-select {
         padding: 0.55rem 1rem;
         border-radius: var(--radius-sm);
-        border: 1.5px solid var(--border);
+        outline: 1.5px solid var(--border);
+        border-color: transparent;
+        border-right: 10px solid transparent;
         background: var(--bg-white);
         color: var(--text-dark);
         font-family: "Poppins", sans-serif;
@@ -1943,9 +2053,61 @@
       /* ================================
        Responsive Styles
        ================================ */
-      @media (max-width: 1024px) {
+      /* @media (max-width: 1024px) { */
+      @media (max-width: 1154px) {
         .skills-grid {
           grid-template-columns: repeat(2, 1fr);
+        }
+
+        /* Tablet: show "More" dropdown, hide secondary links from main row */
+        .nav-more-wrap {
+          display: flex;
+          align-items: center;
+          position: relative;
+        }
+
+        .nav-more-btn {
+          display: inline-flex;
+        }
+
+        .nav-secondary {
+          display: none;
+          position: absolute;
+          top: calc(100% + 0.6rem);
+          right: 0;
+          background: var(--bg-white);
+          border: 1px solid var(--border);
+          border-radius: var(--radius-sm);
+          box-shadow: var(--shadow-lg);
+          padding: 0.5rem 0;
+          min-width: 160px;
+          flex-direction: column;
+          z-index: 1001;
+          gap: 0;
+        }
+
+        .nav-secondary.show {
+          display: flex;
+        }
+
+        .nav-secondary a {
+          padding: 0.55rem 1.1rem;
+          font-size: 0.9rem;
+          font-weight: 500;
+          color: var(--text-dark);
+          width: 100%;
+          transition:
+            background 0.15s ease,
+            color 0.15s ease;
+        }
+
+        .nav-secondary a:hover {
+          background: var(--bg-gray);
+          color: var(--primary);
+        }
+
+        .nav-secondary a::after {
+          display: none;
         }
       }
 
@@ -1967,13 +2129,13 @@
         }
       }
 
-      @media (max-width: 768px) {
+      @media (max-width: 850px) {
         .nav-links {
           position: absolute;
           top: var(--navbar-height);
           left: 0;
           width: 100%;
-          background: rgba(255, 255, 255, 0.98);
+          background: var(--bg-white);
           backdrop-filter: blur(10px);
           flex-direction: column;
           align-items: flex-start;
@@ -1993,6 +2155,39 @@
           opacity: 1;
           visibility: visible;
           pointer-events: all;
+        }
+
+        /* Mobile: unwrap "More" so all links appear in the hamburger menu */
+        .nav-more-wrap {
+          display: flex;
+          flex-direction: column;
+          width: 100%;
+          gap: 1rem;
+        }
+
+        .nav-more-btn {
+          display: none;
+        }
+
+        .nav-secondary {
+          display: flex !important;
+          position: static;
+          background: transparent;
+          border: none;
+          box-shadow: none;
+          padding: 0;
+          width: 100%;
+          gap: 1rem;
+          flex-direction: column;
+        }
+
+        .nav-secondary a {
+          padding: 0;
+          width: auto;
+        }
+
+        .nav-secondary a:hover {
+          background: transparent;
         }
 
         .hamburger {
@@ -2147,17 +2342,26 @@
        ================================ -->
     <header class="navbar scrolled" id="navbar">
       <div class="container">
-        <a href="#" class="logo gradient-text">Danny.</a>
+        <a href="#" class="logo gradient-text">Danny</a>
         <nav>
           <div class="nav-links" id="nav-links">
             <a href="#home">Home</a>
             <a href="#about">About</a>
-            <a href="#skills">Skills</a>
             <a href="#projects">Projects</a>
-            <a href="#github">GitHub</a>
-            <a href="#testimonials">Testimonials</a>
-            <a href="#play">Play</a>
             <a href="#contact">Contact</a>
+
+            <div class="nav-more-wrap">
+              <button class="nav-more-btn" id="more-btn" aria-expanded="false" aria-haspopup="true">
+                More
+              </button>
+              <div class="nav-secondary" id="nav-secondary">
+                <a href="#skills">Skills</a>
+                <a href="#github">GitHub</a>
+                <a href="#testimonials">Testimonials</a>
+                <a href="#play">Play</a>
+              </div>
+            </div>
+
             <button
               class="btn btn-gradient btn-sm"
               onclick="
@@ -2168,35 +2372,13 @@
               Download Resume
             </button>
           </div>
-          <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
-            <svg
-              class="theme-icon sun-icon"
-              aria-hidden="true"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <circle cx="12" cy="12" r="5"></circle>
-              <line x1="12" y1="1" x2="12" y2="3"></line>
-              <line x1="12" y1="21" x2="12" y2="23"></line>
-              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-              <line x1="1" y1="12" x2="3" y2="12"></line>
-              <line x1="21" y1="12" x2="23" y2="12"></line>
-              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-            </svg>
-            <svg
-              class="theme-icon moon-icon"
-              aria-hidden="true"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-            >
-              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-            </svg>
+          <button class="sky-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+            <div class="celestial"></div>
+            <div class="cloud"></div>
+            <div class="cloud"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
           </button>
           <button
             class="hamburger"
@@ -3063,7 +3245,8 @@
                 spellcheck="false"
               />
               <div class="typing-focus-hint hidden" id="typing-focus-hint">
-                Click here or press any key to start typing
+                <!-- Click here or press any key to start typing -->
+                Click here to start typing
               </div>
             </div>
             <div class="typing-controls">
@@ -3530,6 +3713,34 @@
           hamburger.setAttribute("aria-expanded", "false");
         });
       });
+
+      /* ---------- Tablet "More" Dropdown ---------- */
+      const moreBtn = document.getElementById("more-btn");
+      const navSecondary = document.getElementById("nav-secondary");
+
+      if (moreBtn && navSecondary) {
+        moreBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const isOpen = navSecondary.classList.toggle("show");
+          moreBtn.setAttribute("aria-expanded", isOpen);
+        });
+
+        // Close dropdown when clicking a link inside it
+        navSecondary.querySelectorAll("a").forEach((link) => {
+          link.addEventListener("click", () => {
+            navSecondary.classList.remove("show");
+            moreBtn.setAttribute("aria-expanded", "false");
+          });
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener("click", (e) => {
+          if (!moreBtn.contains(e.target) && !navSecondary.contains(e.target)) {
+            navSecondary.classList.remove("show");
+            moreBtn.setAttribute("aria-expanded", "false");
+          }
+        });
+      }
 
       /* ---------- Back to Top ---------- */
       const backToTopBtn = document.getElementById("back-to-top");
