@@ -617,7 +617,7 @@
       .dot-2 {
         width: 16px;
         height: 16px;
-        background: #666;
+        background: #667;
         bottom: 15%;
         left: 10%;
       }
@@ -632,7 +632,7 @@
       .dot-4 {
         width: 20px;
         height: 20px;
-        background: #666;
+        background: #667;
         bottom: 25%;
         right: 8%;
         opacity: 0.8;
@@ -3683,15 +3683,15 @@
         const promptHTML = '<span class="term-prompt">$</span>';
 
         const commands = {
-          help: `Available commands:\n  about       - Learn about Danny\n  skills      - List technical skills\n  projects    - Show project highlights\n  contact     - Display contact info\n  hack        - Start a mini decryption challenge\n  clear       - Clear the terminal`,
+          help: `Available commands:   about       - Learn about Danny   skills      - List technical skills   projects    - Show project highlights   contact     - Display contact info   hack        - Start a mini decryption challenge   clear       - Clear the terminal`,
           about:
             "Danny is a Computer Science student at the University of the Cordilleras in Baguio City, Philippines. Self-taught developer with experience in web development, cybersecurity basics, and robotics.",
           skills:
-            "Frontend: HTML5, CSS3, JavaScript (ES6+), Responsive Design\nBackend: Firebase, Firestore, Authentication\nTools: Git, VS Code, DevTools, Figma\nSpecialized: Cybersecurity basics, Robotics, Problem Solving",
+            "Frontend: HTML5, CSS3, JavaScript (ES6+), Responsive Design Backend: Firebase, Firestore, Authentication Tools: Git, VS Code, DevTools, Figma Specialized: Cybersecurity basics, Robotics, Problem Solving",
           projects:
-            "1. Cat-bolz - Firebase messaging app (Grade 11)\n2. Basic-SocMed - Social media with auth & image uploads\n3. Batchzone - Interactive JavaScript web app",
+            "1. Cat-bolz - Firebase messaging app (Grade 11) 2. Basic-SocMed - Social media with auth & image uploads 3. Batchzone - Interactive JavaScript web app",
           contact:
-            "Email: danny192168@gmail.com\nPhone: 09452863646\nLocation: Baguio City, Philippines",
+            "Email: danny192168@gmail.com Phone: 09452863646 Location: Baguio City, Philippines",
         };
 
         let hackActive = false;
@@ -4032,39 +4032,39 @@
       (function initTyping() {
         const snippets = {
           js: [
-            "const greeting = 'Hello, World!';\nconsole.log(greeting);",
-            "function sum(a, b) {\n  return a + b;\n}",
-            "const users = ['Alice', 'Bob', 'Charlie'];\nusers.forEach(u => console.log(u));",
-            "async function fetchData() {\n  const res = await fetch('/api/data');\n  return res.json();\n}",
-            "const isEven = num => num % 2 === 0;\nconst nums = [1, 2, 3, 4, 5];",
+            "const greeting = 'Hello, World!';console.log(greeting);",
+            "function sum(a, b) {   return a + b; }",
+            "const users = ['Alice', 'Bob', 'Charlie']; users.forEach(u => console.log(u));",
+            "async function fetchData() {   const res = await fetch('/api/data');   return res.json(); }",
+            "const isEven = num => num % 2 === 0; const nums = [1, 2, 3, 4, 5];",
           ],
           html: [
-            '<div class="container">\n  <h1>Hello World</h1>\n  <p>Welcome to my site.</p>\n</div>',
-            '<nav>\n  <a href="#home">Home</a>\n  <a href="#about">About</a>\n</nav>',
-            '<form action="/submit" method="POST">\n  <input type="text" name="user" />\n  <button>Send</button>\n</form>',
-            '<section id="hero">\n  <img src="hero.jpg" alt="Hero" />\n  <h2>Welcome</h2>\n</section>',
-            '<ul class="list">\n  <li>Item One</li>\n  <li>Item Two</li>\n  <li>Item Three</li>\n</ul>',
+            '<div class="container">   <h1>Hello World</h1>   <p>Welcome to my site.</p> </div>',
+            '<nav>   <a href="#home">Home</a>   <a href="#about">About</a> </nav>',
+            '<form action="/submit" method="POST">   <input type="text" name="user" />   <button>Send</button> </form>',
+            '<section id="hero">   <img src="hero.jpg" alt="Hero" />   <h2>Welcome</h2> </section>',
+            '<ul class="list">   <li>Item One</li>   <li>Item Two</li>   <li>Item Three</li> </ul>',
           ],
           css: [
-            ".card {\n  background: #fff;\n  border-radius: 12px;\n  padding: 1.5rem;\n}",
-            "@media (max-width: 768px) {\n  .grid {\n    grid-template-columns: 1fr;\n  }\n}",
-            ":root {\n  --primary: #000;\n  --secondary: #666;\n}",
-            ".btn:hover {\n  transform: translateY(-2px);\n  box-shadow: 0 4px 12px rgba(0,0,0,0.15);\n}",
-            "nav a::after {\n  content: '';\n  width: 0;\n  height: 2px;\n  background: #000;\n}",
+            ".card {   background: #fff;   border-radius: 12px;   padding: 1.5rem; }",
+            "@media (max-width: 768px) {   .grid {     grid-template-columns: 1fr;   } }",
+            ":root {   --primary: #000;   --secondary: #66; }",
+            ".btn:hover {   transform: translateY(-2px);   box-shadow: 0 4px 12px rgba(0,0,0,0.15); }",
+            "nav a::after {   content: '';   width: 0;   height: 2px;   background: #000; }",
           ],
           py: [
-            "def greet(name):\n    return f'Hello, {name}!'\n\nprint(greet('Danny'))",
-            "numbers = [1, 2, 3, 4, 5]\nsquared = [n ** 2 for n in numbers]",
-            "import random\nprint(random.randint(1, 100))",
-            "with open('data.txt', 'r') as f:\n    content = f.read()",
-            "class Robot:\n    def __init__(self, name):\n        self.name = name\n\n    def move(self):\n        print(f'{self.name} is moving')",
+            "def greet(name):     return f'Hello, {name}!'  print(greet('Danny'))",
+            "numbers = [1, 2, 3, 4, 5] squared = [n ** 2 for n in numbers]",
+            "import random print(random.randint(1, 100))",
+            "with open('data.txt', 'r') as f:     content = f.read()",
+            "class Robot:     def __init__(self, name):         self.name = name      def move(self):         print(f'{self.name} is moving')",
           ],
           mixed: [
-            "const app = document.getElementById('app');\napp.innerHTML = '<h1>Hello</h1>';",
-            "def fib(n):\n    if n <= 1:\n        return n\n    return fib(n-1) + fib(n-2)",
-            ".hero {\n  display: flex;\n  align-items: center;\n  min-height: 100vh;\n}",
-            '<article class="card">\n  <h3>Title</h3>\n  <p>Description goes here.</p>\n</article>',
-            "fetch('/api/user')\n  .then(r => r.json())\n  .then(data => console.log(data));",
+            "const app = document.getElementById('app'); app.innerHTML = '<h1>Hello</h1>';",
+            "def fib(n):     if n <= 1:         return n     return fib(n-1) + fib(n-2)",
+            ".hero {   display: flex;   align-items: center;   min-height: 100vh; }",
+            '<article class="card">   <h3>Title</h3>   <p>Description goes here.</p> </article>',
+            "fetch('/api/user')   .then(r => r.json())   .then(data => console.log(data));",
           ],
         };
 
