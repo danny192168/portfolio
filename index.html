@@ -2365,8 +2365,13 @@
             <button
               class="btn btn-gradient btn-sm"
               onclick="
-                event.preventDefault();
-                alert('Resume download coming soon!');
+                window.open('DanielWal_Resume.pdf', '_blank');
+                const a = document.createElement('a');
+                a.href = 'DanielWal_Resume.pdf';
+                a.download = '';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
               "
             >
               Download Resume

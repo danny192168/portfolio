@@ -4,11 +4,15 @@ A modern, responsive, single-page portfolio website built with plain HTML, CSS, 
 
 ---
 
-## Live Demo
+## Why is copilot a contributor?
 
-Open `portfolio_modern.html` in any modern web browser.
+I'm lazy to type the git commit and push, I'll just tell copilot the name of commit and let him push. Copilot's sole purpose here is for git and github commands.
 
 ---
+
+## A brief note from the developer
+
+I did my best to make the website functional, responsive, and visually polished. I also reviewed and refined the initial AI-generated output to fix functional and visual issues. While I tried to prevent bugs, some may still slip through. If you encounter any, please use the form submission to let me know. I'm actually excited to hear it.
 
 ## Features
 
@@ -32,8 +36,9 @@ Open `portfolio_modern.html` in any modern web browser.
 - **Working Contact Form** — Submits via `mailto:` link to open the visitor's email app
 - **Back-to-Top Button** — Appears after scrolling 400px
 - **Mobile Hamburger Menu** — Animated hamburger-to-X toggle with accessible dropdown
+- **Three fully-functional games** — Try scrolling on the Play section and enjoy the 3 games.
 
-### Accessibility
+<!-- ### Accessibility
 
 - Semantic HTML (`header`, `nav`, `section`, `article`, `footer`)
 - `aria-label` attributes on icon-only buttons
@@ -41,28 +46,21 @@ Open `portfolio_modern.html` in any modern web browser.
 - Respects `prefers-reduced-motion` — animations are disabled for users who prefer reduced motion
 - Visible `:focus-visible` outlines on interactive elements
 
----
+--- -->
 
-## File Structure
+## Project Structure
 
-```
+```text
 portfolio/
-├── portfolio_modern.html    # Main portfolio file (self-contained)
+├── index.html    # Main portfolio file (self-contained)
 └── assets/
     ├── danny.jpg                          # Profile photo
     ├── Cozy Capybara Lakeside Retreat.png # About section image
-    ├── catz1.png                          # Cat-bolz screenshots
-    ├── catz2.png
-    ├── catz3.png
-    ├── feeds.png                          # Basic-SocMed screenshots
-    ├── socmed2.png
-    ├── socmed3.png
-    ├── batchz1.png                        # Batchzone screenshots
-    ├── batchz2.png
-    └── batchz3.png
+    └── *.png                              # Screenshots of featured projects
 ```
 
-> **Note:** The `portfolio_modern.html` file contains all CSS and JavaScript internally. No external CSS or JS files are required.
+> **Note:** The `index.html` file contains all CSS and JavaScript internally. No external CSS or JS files are required.
+> Why so: I never paid for any AI so I do these to efficiently work along AI with this code. I used a lot of AI tools and these option fits best for all of them.
 
 ---
 
