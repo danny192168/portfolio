@@ -1,6 +1,6 @@
 # Danny — Personal Portfolio
 
-A modern, responsive, single-page portfolio website built with plain HTML, CSS, and vanilla JavaScript. No frameworks, no build tools, no external dependencies except Google Fonts.
+A modern, responsive, single-page portfolio website built with plain HTML, CSS, and vanilla JavaScript. No frameworks, no build tools, no external dependencies except Google Fonts. "You don't need any fancy technologies to deploy something cool."
 
 ---
 
@@ -13,6 +13,7 @@ Open `portfolio_modern.html` in any modern web browser.
 ## Features
 
 ### Sections
+
 - **Fixed Navigation Bar** — Sticky navbar with smooth-scroll links, mobile hamburger menu, and a "Download Resume" button
 - **Hero Section** — Full-viewport intro with typewriter effect, social links, and animated decorative dots
 - **About Section** — Two-column layout with image and bio
@@ -23,6 +24,7 @@ Open `portfolio_modern.html` in any modern web browser.
 - **Footer** — Simple dark footer with copyright
 
 ### Interactive Features
+
 - **Dark Mode Toggle** — Switch between light and dark themes; preference is saved to `localStorage`
 - **Typewriter Effect** — Cycles through roles with a blinking cursor
 - **Scroll-Reveal Animations** — Sections and cards fade in as you scroll (via `IntersectionObserver`)
@@ -32,6 +34,7 @@ Open `portfolio_modern.html` in any modern web browser.
 - **Mobile Hamburger Menu** — Animated hamburger-to-X toggle with accessible dropdown
 
 ### Accessibility
+
 - Semantic HTML (`header`, `nav`, `section`, `article`, `footer`)
 - `aria-label` attributes on icon-only buttons
 - `aria-expanded` on the mobile menu toggle
@@ -66,17 +69,18 @@ portfolio/
 ## Customization Guide
 
 ### Changing Colors
+
 The entire color scheme is controlled by CSS custom properties in the `:root` block:
 
 ```css
 :root {
-  --primary: #000000;      /* Main accent color */
-  --secondary: #666666;    /* Supporting accent color */
-  --bg-white: #ffffff;     /* Main background */
-  --bg-gray: #f3f4f6;      /* Alternate background */
-  --text-dark: #000000;    /* Main text */
-  --text-muted: #555555;   /* Secondary text */
-  --border: #e5e7eb;       /* Borders and dividers */
+  --primary: #000000; /* Main accent color */
+  --secondary: #666666; /* Supporting accent color */
+  --bg-white: #ffffff; /* Main background */
+  --bg-gray: #f3f4f6; /* Alternate background */
+  --text-dark: #000000; /* Main text */
+  --text-muted: #555555; /* Secondary text */
+  --border: #e5e7eb; /* Borders and dividers */
 }
 ```
 
@@ -85,14 +89,18 @@ The dark theme overrides these in the `[data-theme="dark"]` block.
 ### Changing Content
 
 #### Personal Info
+
 Edit the text directly in the HTML:
+
 - **Name:** Search for `Danny` in the hero section
 - **Tagline:** Edit `Just build.` in the hero section
 - **About paragraph:** Edit the text inside the `.about-content` section
 - **Contact info:** Update email, phone, and location in the Contact section
 
 #### Projects
+
 Each project card follows this structure:
+
 1. Update the main image `src` in `.project-image img`
 2. Update the project title in `.project-title`
 3. Update the description in `.project-desc`
@@ -101,21 +109,28 @@ Each project card follows this structure:
 6. Update the `projectImages` object in the JavaScript to match your image files
 
 #### Skills
+
 Add or remove skill tags in the `.skills-tags` container:
+
 ```html
 <span class="skill-tag">Your Skill</span>
 ```
 
 #### Testimonials
+
 Edit the quote text, author name, and role inside each `.testimonial-card`.
 
 #### Social Links
+
 Update the `href` attributes on the GitHub and LinkedIn icons in the hero section.
 
 ### Adding More Project Images
+
 To show more screenshots per project:
+
 1. Add new `<img>` tags to the `.gallery-thumbs` container inside the project card
 2. Add the image paths to the `projectImages` object in JavaScript:
+
 ```javascript
 projectImages = {
   catbolz: ["assets/catz1.png", "assets/catz2.png", "assets/catz3.png", "assets/catz4.png"],
